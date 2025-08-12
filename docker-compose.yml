@@ -1,0 +1,24 @@
+
+services:
+  app:
+    build: .
+    container_name: hw_app
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017
+    ports:
+      - "3000:3000"   # HTTP
+      - "5001:5000"   # UDP socket (для простоти теж пробросимо)
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7
+    container_name: hw_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
